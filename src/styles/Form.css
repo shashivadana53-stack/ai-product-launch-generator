@@ -1,0 +1,143 @@
+.form-container {
+  
+  max-width:1200px;
+  margin:auto;
+  overflow-x:hidden;
+
+  
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+  width: 100%;
+  padding: 16px;
+  margin-bottom: 18px;
+  border: 1px solid #dcdcdc;
+  border-radius: 12px;
+  font-size: 16px;
+  outline: none;
+  transition: 0.3s;
+  box-sizing: border-box;
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+  border-color: #7b2ff7;
+  box-shadow: 0 0 10px rgba(123, 47, 247, 0.2);
+}
+
+.form-container textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.form-container button {
+  width: auto;
+  min-width: 280px;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto;
+  background: linear-gradient(
+    90deg,
+    #ff7a18,
+    #7b2ff7
+  );
+  transition: 0.3s;
+}
+
+.form-container button:hover {
+  transform: translateY(-2px);
+}
+
+.pdf-btn {
+  background: #16a34a !important;
+  min-width: 240px !important;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  color: #2d2d2d;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-row > * {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-container {
+    padding: 20px;
+  }
+
+  .form-container button {
+    width: 100%;
+  }
+}
+
+.tabs{
+display:flex;
+gap:10px;
+margin-top:20px;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.tabs button{
+background:#8b5cf6;
+color:white;
+border:none;
+padding:12px 20px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.tabs button:hover{
+background:#6d28d9;
+}
+
+.tab-btn{
+background:linear-gradient(90deg,#7f5af0,#9f6fff);
+color:white;
+border:none;
+padding:15px 40px;
+border-radius:15px;
+font-size:28px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+.tab-active{
+background:linear-gradient(90deg,#ff7b00,#9333ea);
+color:white;
+border:none;
+padding:15px 40px;
+border-radius:15px;
+font-size:28px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0px 0px 20px rgba(255,120,0,.6);
+}

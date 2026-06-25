@@ -1,0 +1,81 @@
+.output-card {
+  background: white;
+
+  border-radius: 15px;
+
+  padding: 20px;
+
+  margin-top: 15px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+  border-left: 6px solid #2563eb;
+
+  transition: 0.3s;
+}
+
+.output-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.output-card h3 {
+  color: #2563eb;
+
+  margin: 0;
+}
+
+.output-card p {
+  white-space: pre-wrap;
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+.copy-btn {
+  background: #2563eb;
+
+  color: white;
+
+  border: none;
+
+  padding: 6px 12px;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  
+
+  font-weight: bold;
+  width: auto !important;
+  min-width: 120px;
+  padding: 10px 18px;
+  font-size: 14px;
+}
+
+.copy-btn:hover {
+  background: #1d4ed8;
+}
+.regen-btn {
+  background: #7b2ff7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  
+  font-weight: bold;
+   width: auto !important;
+  min-width: 120px;
+  padding: 10px 18px;
+  font-size: 14px;
+}
+
+.regen-btn:hover {
+  opacity: 0.9;
+}
