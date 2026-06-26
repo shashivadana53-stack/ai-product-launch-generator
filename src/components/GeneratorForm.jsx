@@ -38,7 +38,7 @@ function GeneratorForm() {
       setLoading(true);
 
       const response = await axios.post(
-        "http://127.0.0.1:5000/generate",
+        "https://ai-product-launch-generator.onrender.com/generate",
         formData
       );
 
@@ -100,7 +100,7 @@ function GeneratorForm() {
     try {
 
       const response = await axios.post(
-        "http://127.0.0.1:5000/regenerate",
+        "https://ai-product-launch-generator.onrender.com/regenerate",
         {
           platform,
           product: formData.productName,
