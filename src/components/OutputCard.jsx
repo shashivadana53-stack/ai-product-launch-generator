@@ -18,10 +18,7 @@ function OutputCard({
         <h3>{title}</h3>
 
         <div
-          style={{
-            display: "flex",
-            gap: "10px",
-          }}
+          className="button-group"
         >
 
           <button

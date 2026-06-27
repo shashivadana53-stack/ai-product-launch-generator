@@ -79,3 +79,24 @@
 .regen-btn:hover {
   opacity: 0.9;
 }
+.button-group{
+  display:flex;
+  gap:10px;
+  width:100%;
+}
+
+.button-group button{
+  flex:1;
+}
+
+@media (max-width:768px){
+
+.button-group{
+  flex-direction:column;
+}
+
+.button-group button{
+  width:100%;
+}
+
+}
