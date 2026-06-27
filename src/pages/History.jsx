@@ -246,7 +246,9 @@ marginBottom:"20px"
 
         <p>
           <strong>Created:</strong>{" "}
-            {new Date(item.created_at).toLocaleString()}
+            {new Date(item.created_at).toLocaleString("en-IN", {
+              timeZone: "Asia/Kolkata"
+            })}
         </p>
         <button
           onClick={() => fetchDetails(item.id)}
