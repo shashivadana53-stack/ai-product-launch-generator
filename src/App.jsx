@@ -12,21 +12,11 @@ import ExportDOCXPage from "./pages/ExportDOCXPage";
 function App() {
   return (
     <BrowserRouter>
-      <div style={{ display: "flex" }}>
+      <div className="app">
+
         <Sidebar />
 
-        <div
-          style={{
-            marginLeft: "280px",
-            width: "calc(100% - 280px)",
-            minHeight: "100vh",
-            padding: "20px",
-            background: "linear-gradient(135deg,#ff8a00,#ff5f6d,#8b5cf6)",
-            boxSizing: "border-box",
-            overflowX: "hidden",
-            flex: 1,
-          }}
-        >
+        <div className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
 
