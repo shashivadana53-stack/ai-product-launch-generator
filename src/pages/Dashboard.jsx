@@ -475,11 +475,8 @@ const trendText =
                 <tr key={index}>
                   <td>{item.product}</td>
                   <td>{item.occasion}</td>
-                  <td>
-                    {new Date(item.date).toLocaleString("en-IN", {
-                      timeZone: "Asia/Kolkata"
-                    })}
-                  </td>
+                  
+                  
                 </tr>
 
               )
