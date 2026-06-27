@@ -1,31 +1,41 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import "../styles/Sidebar.css";
 
 function Sidebar() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div className="sidebar">
+    <>
+      <button
+        className="menu-toggle"
+        onClick={() => setOpen(!open)}
+      >
+        ☰
+      </button>
 
-      <Link to="/" className="menu-item">
-        🏠 Home
-      </Link>
+      <div className={`sidebar ${open ? "show" : ""}`}>
+        <Link to="/" className="menu-item" onClick={() => setOpen(false)}>
+          🏠 Home
+        </Link>
 
-      <Link to="/dashboard" className="menu-item">
-        📊 Dashboard
-      </Link>
+        <Link to="/dashboard" className="menu-item" onClick={() => setOpen(false)}>
+          📊 Dashboard
+        </Link>
 
-      <Link to="/history" className="menu-item">
-        🕒 History
-      </Link>
+        <Link to="/history" className="menu-item" onClick={() => setOpen(false)}>
+          🕒 History
+        </Link>
 
-      <Link to="/image-prompt" className="menu-item">
-        🖼 AI Image Prompt
-      </Link>
+        <Link to="/image-prompt" className="menu-item" onClick={() => setOpen(false)}>
+          🖼 AI Image Prompt
+        </Link>
 
-      <Link to="/export-docx" className="menu-item">
-        📄 Download PDF Kit
-      </Link>
-
-    </div>
+        <Link to="/export-docx" className="menu-item" onClick={() => setOpen(false)}>
+          📄 Download PDF Kit
+        </Link>
+      </div>
+    </>
   );
 }
 
