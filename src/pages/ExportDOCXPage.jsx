@@ -13,7 +13,7 @@ function ExportDOCXPage() {
   const fetchLatestCampaign = async () => {
     try {
       const response = await axios.get(
-        "http://127.0.0.1:5000/latest-campaign"
+        "https://ai-product-launch-generator.onrender.com/latest-campaign"
       );
 
       if (

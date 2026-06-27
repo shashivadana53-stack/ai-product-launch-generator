@@ -22,9 +22,8 @@ const fetchHistory = async () => {
 try {
 
   const response = await axios.get(
-    "http://127.0.0.1:5000/history"
+    "https://ai-product-launch-generator.onrender.com/history"
   );
-
   setHistory(response.data);
 
 } catch (error) {
@@ -44,7 +43,7 @@ const fetchDetails = async (id) => {
   try {
 
     const response = await axios.get(
-      `http://127.0.0.1:5000/history/${id}`
+      `https://ai-product-launch-generator.onrender.com/history/${id}`
     );
 
     setSelectedCampaign(response.data);
@@ -69,7 +68,7 @@ const deleteCampaign = async (id) => {
   try {
 
     await axios.delete(
-      `http://127.0.0.1:5000/delete-campaign/${id}`
+      `https://ai-product-launch-generator.onrender.com/delete-campaign/${id}`
     );
 
     fetchHistory();
@@ -121,7 +120,7 @@ if(!confirmClear) return;
 try{
 
 await axios.delete(
-"http://127.0.0.1:5000/clear-history"
+"https://ai-product-launch-generator.onrender.com/clear-history"
 );
 
 fetchHistory();

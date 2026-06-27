@@ -3,7 +3,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 
-import sqlite3
+import psycopg2
 import requests
 import os
 
@@ -14,6 +14,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 load_dotenv()
+DATABASE_URL = os.getenv("DATABASE_URL")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
@@ -21,50 +22,65 @@ OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 CEREBRAS_API_KEY = os.getenv("CEREBRAS_API_KEY")
 
 
+
+
+
+def get_db_connection():
+
+    conn = psycopg2.connect(DATABASE_URL)
+
+    return conn
+def create_tables():
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS launch_history (
+        id SERIAL PRIMARY KEY,
+        product_name TEXT,
+        key_features TEXT,
+        occasion TEXT,
+        price_range TEXT,
+        urgency_level TEXT,
+        instagram TEXT,
+        whatsapp TEXT,
+        email_subject TEXT,
+        email_body TEXT,
+        linkedin TEXT,
+        facebook TEXT,
+        created_at TIMESTAMP
+    )
+    """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS regeneration_log (
+        id SERIAL PRIMARY KEY,
+        launch_id INTEGER,
+        platform TEXT,
+        regenerated_content TEXT
+    )
+    """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS image_prompt_history (
+        id SERIAL PRIMARY KEY,
+        product_name TEXT,
+        occasion TEXT,
+        prompt TEXT
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+    print("✅ PostgreSQL tables created successfully")
+
 app = Flask(__name__)
 CORS(app)
+create_tables()
 
 
-DB_NAME = "database.db"
-conn = sqlite3.connect(DB_NAME)
-cursor = conn.cursor()
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS image_prompt_history (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    product_name TEXT,
-    occasion TEXT,
-    prompt TEXT
-)
-""")
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS launch_history (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    product_name TEXT,
-    key_features TEXT,
-    occasion TEXT,
-    price_range TEXT,
-    urgency_level TEXT,
-    instagram TEXT,
-    whatsapp TEXT,
-    email_subject TEXT,
-    email_body TEXT,
-    linkedin TEXT,
-    facebook TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-""")
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS regeneration_log (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    launch_id INTEGER,
-    platform TEXT,
-    regenerated_content TEXT
-)
-""")
-
-conn.commit()
-conn.close()
 
 def call_ai(prompt):
 
@@ -147,6 +163,7 @@ def generate():
     try:
 
         data = request.json
+        print("Generate API called")
 
         product_name = data.get("productName", "")
         key_features = data.get("keyFeatures", "")
@@ -279,7 +296,8 @@ Return plain text only.
         
         
 
-        conn = sqlite3.connect(DB_NAME)
+        conn = get_db_connection()
+        
         cursor = conn.cursor()
         created_at = (
             datetime.utcnow() + timedelta(hours=5, minutes=30)
@@ -303,7 +321,7 @@ Return plain text only.
         created_at
         )
 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """,
 
         (
@@ -322,9 +340,15 @@ Return plain text only.
         created_at
 
         ))
+        print("Insert executed")
+
+        cursor.execute("SELECT COUNT(*) FROM launch_history")
+        print(cursor.fetchone())
 
         conn.commit()
+        print("Committed")
         conn.close()
+        print("Returning response")
 
         return jsonify({
 
@@ -376,7 +400,7 @@ Rules:
 
         text = call_ai(prompt)
 
-        conn = sqlite3.connect(DB_NAME)
+        conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
@@ -386,7 +410,7 @@ Rules:
             platform,
             regenerated_content
         )
-        VALUES (?, ?, ?)
+        VALUES (%s, %s, %s)
         """,
         (
             1,
@@ -413,9 +437,9 @@ Rules:
 def history():
 
     try:
-
-        conn = sqlite3.connect(DB_NAME)
-
+        
+        print("History API called")
+        conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
@@ -433,6 +457,7 @@ def history():
         """)
 
         rows = cursor.fetchall()
+        print(rows)
         
 
         conn.close()
@@ -465,8 +490,7 @@ def analytics():
 
     try:
 
-        conn = sqlite3.connect(DB_NAME)
-
+        conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
@@ -488,7 +512,7 @@ def analytics():
 
            if date:
 
-                month = date[:7]      # 2026-06
+                month = date.strftime("%Y-%m")    # 2026-06
 
                 monthly_counts[month] = (
                    monthly_counts.get(month, 0) + 1
@@ -597,30 +621,22 @@ def latest_campaign():
 
     try:
 
-        conn = sqlite3.connect(DB_NAME)
-
+        conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
-        SELECT
-
-        product_name,
-        occasion,
-
-        instagram,
-        whatsapp,
-
-        email_subject,
-        email_body,
-
-        linkedin,
-        facebook
-
-        FROM launch_history
-
-        ORDER BY id DESC
-
-        LIMIT 1
+            SELECT
+            product_name,
+            occasion,
+            instagram,
+            whatsapp,
+            email_subject,
+            email_body,
+            linkedin,
+            facebook
+            FROM launch_history
+            ORDER BY id DESC
+            LIMIT 1
         """)
 
         row = cursor.fetchone()
@@ -648,7 +664,6 @@ def latest_campaign():
             "facebook": row[7]
 
         })
-
     except Exception as e:
 
         return jsonify({
@@ -660,8 +675,7 @@ def history_details(launch_id):
 
     try:
 
-        conn = sqlite3.connect(DB_NAME)
-
+        conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
@@ -677,7 +691,7 @@ def history_details(launch_id):
             facebook,
             created_at
         FROM launch_history
-        WHERE id = ?
+        WHERE id = %s
         """, (launch_id,))
 
         row = cursor.fetchone()
@@ -719,19 +733,18 @@ def delete_campaign(id):
 
     try:
 
-        conn = sqlite3.connect(DB_NAME)
+        conn = get_db_connection()
         cursor = conn.cursor()
-
         # regeneration logs delete
         cursor.execute("""
         DELETE FROM regeneration_log
-        WHERE launch_id=?
+        WHERE launch_id=%s
         """, (id,))
 
         # launch history delete
         cursor.execute("""
         DELETE FROM launch_history
-        WHERE id=?
+        WHERE id=%s
         """, (id,))
 
         conn.commit()
@@ -752,7 +765,7 @@ def clear_history():
 
     try:
 
-        conn = sqlite3.connect(DB_NAME)
+        conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute("DELETE FROM regeneration_log")
@@ -776,7 +789,7 @@ def regeneration_analytics():
 
     try:
 
-        conn = sqlite3.connect(DB_NAME)
+        conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
@@ -890,7 +903,7 @@ Return only the image prompt.
 
         image_prompt = result["choices"][0]["message"]["content"]
 
-        conn = sqlite3.connect(DB_NAME)
+        conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
@@ -900,7 +913,7 @@ Return only the image prompt.
         occasion,
         prompt
         )
-        VALUES (?, ?, ?)
+        VALUES (%s, %s, %s)
         """,
         (
         product_name,
@@ -926,7 +939,7 @@ def image_history():
 
     try:
 
-        conn = sqlite3.connect(DB_NAME)
+        conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute("""

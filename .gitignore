@@ -27,7 +27,7 @@ dist-ssr
 backend/.env
 
 # SQLite database
-backend/database.db
+
 
 # Python virtual environment
 .venv/
@@ -37,6 +37,6 @@ venv/
 __pycache__/
 *.pyc
 backend/.env
-backend/database.db
+
 .venv/
 node_modules/

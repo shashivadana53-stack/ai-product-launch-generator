@@ -1,20 +1,21 @@
-.sidebar {
-  width: 280px;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
+.sidebar{
+    width:280px;
+    height:100vh;
+    position:fixed;
+    left:0;
+    top:0;
 
-  background: #1f1b2e;
+    padding:20px;
 
-  padding: 25px 15px;
-  overflow-y:auto;
-  overflow-x:hidden;
+    background:#1f1b2e;
 
-  display: flex;
-  flex-direction: column;
+    overflow-y:auto;
+    overflow-x:hidden;
 
-  box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+    display:flex;
+    flex-direction:column;
+
+    box-sizing:border-box;
 }
 
 

@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import History from "./pages/History";
 import ImagePrompt from "./pages/ImagePrompt";
+import "./App.css";
 import ExportDOCXPage from "./pages/ExportDOCXPage";
 
 function App() {
@@ -16,15 +17,14 @@ function App() {
 
         <div
           style={{
-            marginLeft: "260px",
-            flex: 1,
-            overflowX: "hidden",
+            marginLeft: "280px",
+            width: "calc(100% - 280px)",
             minHeight: "100vh",
-            width: "calc(100% - 300px)",
-            overflowX: "hidden",
-            background:
-              "linear-gradient(135deg,#ff8a00,#ff5f6d,#8b5cf6)",
             padding: "20px",
+            background: "linear-gradient(135deg,#ff8a00,#ff5f6d,#8b5cf6)",
+            boxSizing: "border-box",
+            overflowX: "hidden",
+            flex: 1,
           }}
         >
           <Routes>

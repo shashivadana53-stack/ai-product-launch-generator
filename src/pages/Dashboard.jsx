@@ -33,11 +33,11 @@ const fetchAnalytics = async () => {
 
     const response =
       await axios.get(
-        "http://127.0.0.1:5000/analytics"
+        "https://ai-product-launch-generator.onrender.com/analytics"
       );
     const regenResponse =
       await axios.get(
-        "http://127.0.0.1:5000/regeneration-analytics"
+        "https://ai-product-launch-generator.onrender.com/regeneration-analytics"
       );
 
     setRegenerationData(
@@ -476,11 +476,7 @@ const trendText =
                   <td>{item.product}</td>
                   <td>{item.occasion}</td>
                   <td>
-                    {new Date(
-                      item.created_at + " UTC"
-                    ).toLocaleString("en-IN", {
-                      timeZone: "Asia/Kolkata"
-                    })}
+                    {new Date(item.date).toLocaleString("en-IN")}
                   </td>
                 </tr>
 
